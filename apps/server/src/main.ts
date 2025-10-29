@@ -5,7 +5,10 @@ import compression from 'compression';
 import helmet from 'helmet';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
-import { Configuration,  CorsConfiguration, OpenapiConfiguration } from './config/configuration';
+import {
+  CorsConfiguration,
+  OpenapiConfiguration,
+} from './config/configuration';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -51,7 +54,8 @@ async function bootstrap() {
   // app.setGlobalPrefix('api');
   await app.listen(port);
   Logger.debug(`Server started on http://localhost:${port}`);
-  Logger.debug(`OpenAPI documentation available at http://localhost:${port}/api`);
+  Logger.debug(
+    `OpenAPI documentation available at http://localhost:${port}/api`,
+  );
 }
-bootstrap()
-  .catch((err) => console.error(err));
+bootstrap().catch((err) => console.error(err));

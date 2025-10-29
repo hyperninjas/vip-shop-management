@@ -35,7 +35,7 @@ import { HealthController } from './health/health.controller';
         },
       ],
     }),
-    TerminusModule
+    TerminusModule,
   ],
   providers: [
     {
