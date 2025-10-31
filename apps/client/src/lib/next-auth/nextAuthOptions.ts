@@ -1,15 +1,8 @@
 import { NextAuthOptions, User } from 'next-auth';
-import Auth0Provider from 'next-auth/providers/auth0';
-import AzureADProvider from 'next-auth/providers/azure-ad';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import GoogleProvider from 'next-auth/providers/google';
 import { users } from 'data/users';
 import paths, { apiEndpoints } from 'routes/paths';
 import axiosInstance from 'services/axios/axiosInstance';
-import {
-  firebaseLoginProviderConfig,
-  firebaseSignupProviderConfig,
-} from 'services/firebase/firebase-provider';
 
 export interface SessionUser extends User {
   email: string;
@@ -30,6 +23,7 @@ export const demoUser: SessionUser = {
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
+      id: 'credentials',
       name: 'Credentials',
       credentials: {
         email: { label: 'Email', type: 'text' },
@@ -44,15 +38,15 @@ export const authOptions: NextAuthOptions = {
             });
             return res;
           } catch (error: any) {
-            throw new Error(error.data?.message);
+            throw new Error(error.data?.message || 'Login failed');
           }
         }
         return null;
       },
     }),
     CredentialsProvider({
-      id: 'jwt-signup',
-      name: 'Jwt Signup',
+      id: 'signup',
+      name: 'Signup',
       credentials: {
         name: { label: 'Name', type: 'text' },
         email: { label: 'Email', type: 'text' },
@@ -66,34 +60,13 @@ export const authOptions: NextAuthOptions = {
               email: credentials.email,
               password: credentials.password,
             });
-
             return res;
           } catch (error: any) {
-            throw new Error(error.data?.message);
+            throw new Error(error.data?.message || 'Registration failed');
           }
         }
         return null;
       },
-    }),
-
-    CredentialsProvider(firebaseLoginProviderConfig),
-    CredentialsProvider(firebaseSignupProviderConfig),
-
-    Auth0Provider({
-      clientId: process.env.AUTH0_CLIENT_ID as string,
-      clientSecret: process.env.AUTH0_CLIENT_SECRET as string,
-      issuer: ('https://' + process.env.AUTH0_DOMAIN) as string,
-    }),
-
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }),
-
-    AzureADProvider({
-      clientId: process.env.AZURE_AD_CLIENT_ID as string,
-      clientSecret: process.env.AZURE_AD_CLIENT_SECRET as string,
-      tenantId: process.env.AZURE_AD_TENANT_ID as string,
     }),
   ],
   session: {
@@ -126,7 +99,7 @@ export const authOptions: NextAuthOptions = {
   },
 
   pages: {
-    signIn: paths.defaultJwtLogin,
+    signIn: paths.login,
     signOut: paths.defaultLoggedOut,
   },
 };

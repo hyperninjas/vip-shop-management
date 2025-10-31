@@ -1,30 +1,17 @@
 'use client';
 
 import Lottie from 'lottie-react';
-import { PropsWithChildren, Suspense, useMemo } from 'react';
-import { useSelectedLayoutSegment } from 'next/navigation';
-import { Link, Stack, Tab, Tabs, tabsClasses } from '@mui/material';
+import { PropsWithChildren, Suspense } from 'react';
+import { Stack } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import authDark from 'assets/json/auth-dark.json';
 import auth from 'assets/json/auth.json';
 import { useThemeMode } from 'hooks/useThemeMode';
-import { cssVarRgba } from 'lib/utils';
-import paths from 'routes/paths';
 import Logo from 'components/common/Logo';
-import Auth0Icon from 'components/icons/Auth0Icon';
-import FirebaseIcon from 'components/icons/FirebaseIcon';
-import JwtIcon from 'components/icons/JwtIcon';
 import DefaultLoader from 'components/loading/DefaultLoader';
 
 const DefaultAuthLayout = ({ children }: PropsWithChildren) => {
-  const segment = useSelectedLayoutSegment();
-
   const { isDark } = useThemeMode();
-
-  const activeTab = useMemo(() => {
-    if (segment === 'auth0' || segment === 'firebase' || segment === 'jwt') return segment;
-    return 'jwt';
-  }, [segment]);
 
   return (
     <Grid
@@ -81,53 +68,7 @@ const DefaultAuthLayout = ({ children }: PropsWithChildren) => {
               justifyContent: 'center',
             }}
           >
-            <Tabs
-              value={activeTab}
-              sx={{
-                bgcolor: 'background.elevation1',
-                p: 1,
-                borderRadius: 9,
-                [`& .${tabsClasses.indicator}`]: {
-                  height: 1,
-                  bgcolor: (theme) => cssVarRgba(theme.vars.palette.primary.mainChannel, 0.1),
-                  borderRadius: 12,
-                },
-              }}
-            >
-              <Tab
-                component={Link}
-                underline="none"
-                href={paths.defaultJwtLogin}
-                value="jwt"
-                label="jwt"
-                icon={<JwtIcon />}
-                iconPosition="start"
-                disableRipple
-                sx={{ px: 1.75 }}
-              />
-              <Tab
-                component={Link}
-                underline="none"
-                href={paths.defaultAuth0Login}
-                value="auth0"
-                label="Auth 0"
-                icon={<Auth0Icon />}
-                iconPosition="start"
-                disableRipple
-                sx={{ px: 1.75 }}
-              />
-              <Tab
-                component={Link}
-                underline="none"
-                href={paths.defaultFirebaseLogin}
-                value="firebase"
-                label="Firebase"
-                icon={<FirebaseIcon />}
-                iconPosition="start"
-                disableRipple
-                sx={{ px: 1.75 }}
-              />
-            </Tabs>
+            {/* Authentication UI */}
           </Stack>
         </Stack>
       </Grid>
