@@ -102,7 +102,7 @@ const SignupForm = ({
               }}>
               Already have an account?
               <Link
-                href={paths.defaultAuth0Login}
+                href={paths.login}
                 sx={{ ml: 1 }}>
                 Log in
               </Link>

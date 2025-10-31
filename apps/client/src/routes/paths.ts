@@ -2,14 +2,16 @@ export const rootPaths = {
   root: '/',
   pagesRoot: 'pages',
   authRoot: 'authentication',
-  authDefaultAuth0Root: 'default/auth0',
+  authDefaultRoot: 'default',
   errorRoot: 'error',
 };
 
 const paths = {
   starter: `/${rootPaths.pagesRoot}/starter`,
 
-  defaultAuth0Login: `/${rootPaths.authRoot}/${rootPaths.authDefaultAuth0Root}/login`,
+  login: `/${rootPaths.authRoot}/${rootPaths.authDefaultRoot}/login`,
+  signup: `/${rootPaths.authRoot}/${rootPaths.authDefaultRoot}/signup`,
+  forgotPassword: `/${rootPaths.authRoot}/${rootPaths.authDefaultRoot}/forgot-password`,
   
   notifications: `/${rootPaths.pagesRoot}/notifications`,
 
@@ -19,8 +21,9 @@ const paths = {
 };
 
 export const authPaths = {
-  /* ---------------------------------Auth0----------------------------------------- */
-  login: paths.defaultAuth0Login,
+  login: paths.login,
+  signup: paths.signup,
+  forgotPassword: paths.forgotPassword,
 };
 
 export const apiEndpoints = {
