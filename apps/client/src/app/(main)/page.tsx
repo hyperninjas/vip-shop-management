@@ -1,7 +1,7 @@
-import Starter from "components/sections/starter";
+
 
 const Page = () => {
-  return <Starter />;
+  return <div >Hello</div>;
 };
 
 export default Page;

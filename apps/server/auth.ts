@@ -25,6 +25,21 @@ export const auth: AuthInstance = betterAuth({
     transaction: true,
     debugLogs: true,
   }),
+  databaseHooks: {
+    session: {
+      create: {
+        before: async (session) => {
+          // const organization = await getActiveOrganization(session.userId);
+          return Promise.resolve({
+            data: {
+              ...session,
+              activeOrganizationId: '',
+            },
+          });
+        },
+      },
+    },
+  },
   // npx @better-auth/cli@latest generate
   appName: 'Server',
   plugins: [
@@ -38,7 +53,9 @@ export const auth: AuthInstance = betterAuth({
     oneTimeToken(),
     lastLoginMethod(),
     admin(),
-    organization(),
+    organization({
+      teams: { enabled: true },
+    }),
     twoFactor(),
     passkey(),
   ],

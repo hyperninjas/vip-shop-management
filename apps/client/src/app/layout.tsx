@@ -1,15 +1,12 @@
 import { type ReactNode } from 'react';
 import type { Metadata } from 'next';
-import { getServerSession } from 'next-auth';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import App from 'app/App';
-import { authOptions } from 'lib/next-auth/nextAuthOptions';
 import 'locales/i18n';
 import BreakpointsProvider from 'providers/BreakpointsProvider';
 import LocalizationProvider from 'providers/LocalizationProvider';
 import NotistackProvider from 'providers/NotistackProvider';
-import { SessionProvider } from 'providers/SessionProvider';
 import SettingsProvider from 'providers/SettingsProvider';
 import ThemeProvider from 'providers/ThemeProvider';
 import { plusJakartaSans, splineSansMono } from 'theme/typography';
@@ -30,7 +27,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const session = await getServerSession(authOptions);
 
   return (
     <html
@@ -41,7 +37,6 @@ export default async function RootLayout({
       <body>
         <InitColorSchemeScript attribute="data-aurora-color-scheme" modeStorageKey="aurora-mode" />
         <AppRouterCacheProvider>
-          <SessionProvider session={session}>
             <SettingsProvider>
               <LocalizationProvider>
                 <ThemeProvider>
@@ -53,7 +48,6 @@ export default async function RootLayout({
                 </ThemeProvider>
               </LocalizationProvider>
             </SettingsProvider>
-          </SessionProvider>
         </AppRouterCacheProvider>
       </body>
     </html>

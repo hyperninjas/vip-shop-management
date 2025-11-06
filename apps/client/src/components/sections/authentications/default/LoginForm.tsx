@@ -1,6 +1,5 @@
 'use client';
 
-import { SignInResponse } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -24,7 +23,7 @@ import DefaultCredentialAlert from '../common/DefaultCredentialAlert';
 import SocialAuth from './SocialAuth';
 
 interface LoginFormProps {
-  handleLogin: (data: LoginFormValues) => Promise<SignInResponse | undefined>;
+  handleLogin: (data: LoginFormValues) => Promise<any | undefined>;
   signUpLink: string;
   socialAuth?: boolean;
   forgotPasswordLink?: string;

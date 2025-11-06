@@ -1,4 +1,4 @@
-import { signIn } from 'next-auth/react';
+
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@mui/material';
 import Grid from '@mui/material/Grid';
@@ -15,10 +15,10 @@ const SocialAuth = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      const res = await signIn('google', {
-        callbackUrl: callbackUrl || rootPaths.root,
-      });
-      console.log({ res });
+      // const res = await signIn('google', {
+      //   callbackUrl: callbackUrl || rootPaths.root,
+      // });
+      // console.log({ res });
     } catch (error) {
       console.error(error);
     }
@@ -26,10 +26,10 @@ const SocialAuth = () => {
 
   const handleAzureLogin = async () => {
     try {
-      const res = await signIn('azure-ad', {
-        callbackUrl: callbackUrl || rootPaths.root,
-      });
-      console.log({ res });
+      // const res = await signIn('azure-ad', {
+      //   callbackUrl: callbackUrl || rootPaths.root,
+      // });
+      // console.log({ res });
     } catch (error) {
       console.error(error);
     }
