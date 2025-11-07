@@ -1,4 +1,3 @@
-import { getSession } from 'next-auth/react';
 import axios from 'axios';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
@@ -10,7 +9,6 @@ const axiosInstance = axios.create({
 
 // Adding authorization header to axios instance if session exists
 axiosInstance.interceptors.request.use(async (config) => {
-  const session = await getSession();
   return config;
 });
 

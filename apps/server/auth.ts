@@ -23,7 +23,7 @@ export const auth: AuthInstance = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
     transaction: true,
-    debugLogs: true,
+    // debugLogs: true,
   }),
   databaseHooks: {
     session: {
@@ -59,11 +59,14 @@ export const auth: AuthInstance = betterAuth({
     twoFactor(),
     passkey(),
   ],
+
+  trustedOrigins: ['http://localhost:3001', 'http://localhost:4000'],
   socialProviders: {
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      scopes: ['https://www.googleapis.com/auth/drive.file'],
+      clientId:
+        '731592961565-k651r7qts814nhrqltufb89bnmtk5o0n.apps.googleusercontent.com',
+      clientSecret: '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',
+      scope: ['https://www.googleapis.com/auth/drive.file'],
       accessType: 'offline',
       prompt: 'select_account consent',
     },

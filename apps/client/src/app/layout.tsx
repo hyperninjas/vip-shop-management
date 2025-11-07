@@ -27,7 +27,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-
   return (
     <html
       suppressHydrationWarning
@@ -37,17 +36,17 @@ export default async function RootLayout({
       <body>
         <InitColorSchemeScript attribute="data-aurora-color-scheme" modeStorageKey="aurora-mode" />
         <AppRouterCacheProvider>
-            <SettingsProvider>
-              <LocalizationProvider>
-                <ThemeProvider>
-                  <NotistackProvider>
-                    <BreakpointsProvider>
-                      <App>{children}</App>
-                    </BreakpointsProvider>
-                  </NotistackProvider>
-                </ThemeProvider>
-              </LocalizationProvider>
-            </SettingsProvider>
+          <SettingsProvider>
+            <LocalizationProvider>
+              <ThemeProvider>
+                <NotistackProvider>
+                  <BreakpointsProvider>
+                    <App>{children}</App>
+                  </BreakpointsProvider>
+                </NotistackProvider>
+              </ThemeProvider>
+            </LocalizationProvider>
+          </SettingsProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
