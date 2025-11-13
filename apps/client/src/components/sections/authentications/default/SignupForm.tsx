@@ -102,7 +102,7 @@ const SignupForm = ({
       } else if (response?.data) {
         router.push(rootPaths.root);
       } else {
-        setPasskeyError("Unexpected response from the server");
+        router.push(rootPaths.root);
       }
     } catch (err) {
       setPasskeyError("An unexpected error occurred");
