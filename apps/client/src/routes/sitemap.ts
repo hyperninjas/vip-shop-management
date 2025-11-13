@@ -17,7 +17,7 @@ export interface SubMenuItem {
 
 export interface MenuItem {
   id: string;
-  key?: string;
+  key?: string; // used for the locale
   subheader: string;
   icon: string;
   iconSx?: SxProps;
@@ -26,11 +26,91 @@ export interface MenuItem {
 
 const sitemap: MenuItem[] = [
   {
+    id: 'homepage',
+    subheader: 'Homepage',
+    key: 'homepage',
+    icon: 'material-symbols:data-exploration-outline-rounded',
+    items: [
+      {
+        name: 'E-commerce',
+        key: 'e_commerce',
+        path: paths[404],
+        pathName: 'e-commerce',
+        icon: 'material-symbols:shopping-cart-outline',
+        active: true,
+      },
+    ],
+  },
+  {
+    id: 'apps',
+    subheader: 'Apps',
+    key: 'apps',
+    icon: 'material-symbols:widgets-outline-rounded',
+    items: [
+      {
+        name: 'E-commerce',
+        key: 'e_commerce',
+        pathName: 'ecommerce',
+        icon: 'material-symbols:storefront-outline-rounded',
+        active: true,
+        hasNew: true,
+        items: [
+          {
+            name: 'Admin',
+            key: 'admin',
+            pathName: 'admin',
+            active: true,
+            hasNew: true,
+            items: [
+              {
+                name: 'Product listing',
+                key: 'product_listing',
+                path: paths[404],
+                pathName: 'product-listing',
+                active: true,
+              },
+              {
+                name: 'Product list',
+                key: 'product_list',
+                path: paths[404],
+                pathName: 'product-list',
+                active: true,
+              },
+            ],
+          },
+          {
+            name: 'Customer',
+            key: 'customer',
+            pathName: 'customer',
+            active: true,
+            items: [
+              {
+                name: 'Homepage',
+                key: 'homepage',
+                path: paths[404],
+                pathName: 'homepage',
+                active: true,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
     id: 'pages',
     subheader: 'Pages',
     key: 'pages',
     icon: 'material-symbols:view-quilt-outline',
     items: [
+      {
+        name: 'Account',
+        key: 'account',
+        path: paths.account,
+        pathName: 'account',
+        active: true,
+        icon: 'material-symbols:admin-panel-settings-outline-rounded',
+      },
       {
         name: 'Error 404',
         key: 'error_404',
@@ -38,136 +118,6 @@ const sitemap: MenuItem[] = [
         active: true,
         icon: 'material-symbols:warning-outline-rounded',
         path: paths[404],
-      },
-    ],
-  },
-  {
-    id: 'authentication',
-    subheader: 'Authentication',
-    key: 'authentication',
-    icon: 'material-symbols:security-rounded',
-    items: [
-      {
-        name: 'Login',
-        key: 'login',
-        icon: 'material-symbols:login',
-        path: paths.login,
-        pathName: 'login',
-        active: true,
-      },
-      {
-        name: 'Sign up',
-        key: 'signup',
-        icon: 'material-symbols:person-add-outline',
-        path: paths.signup,
-        pathName: 'signup',
-        active: true,
-      },
-      {
-        name: 'Forgot password',
-        key: 'forgot_password',
-        icon: 'material-symbols:key-outline',
-        path: paths.forgotPassword,
-        pathName: 'forgot-password',
-        active: true,
-      },
-    ],
-  },
-  {
-    id: 'misc',
-    subheader: 'Misc',
-    key: 'misc',
-    icon: 'material-symbols:dashboard-customize-outline-rounded',
-    items: [
-      {
-        name: 'Multi level',
-        key: 'multi_level',
-        pathName: 'multi-level',
-        icon: 'material-symbols:layers-outline-rounded',
-        active: true,
-        items: [
-          {
-            name: 'Level two (1)',
-            key: 'level_two_1',
-            path: '#!',
-            pathName: 'multi-level-2',
-            active: true,
-          },
-          {
-            name: 'Level two (2)',
-            key: 'level_two_2',
-            pathName: 'multi-level-3',
-            active: true,
-            items: [
-              {
-                name: 'Level three (1)',
-                key: 'level_three_1',
-                path: '#!',
-                pathName: 'multi-level-item-3',
-                active: true,
-              },
-              {
-                name: 'Level three (2)',
-                key: 'level_three_2',
-                path: '#!',
-                pathName: 'multi-level-item-4',
-                active: true,
-              },
-            ],
-          },
-          {
-            name: 'Level two (3)',
-            key: 'level_two_3',
-            pathName: 'multi-level-4',
-            active: true,
-            items: [
-              {
-                name: 'Level three (3)',
-                key: 'level_three_3',
-                path: '#!',
-                pathName: 'multi-level-item-6',
-                active: true,
-              },
-              {
-                name: 'Level three (4)',
-                key: 'level_three_4',
-                pathName: 'multi-level-item-7',
-                active: true,
-                items: [
-                  {
-                    name: 'Level four (1)',
-                    key: 'level_four_1',
-                    path: '#!',
-                    pathName: 'multi-level-item-8',
-                    active: true,
-                  },
-                  {
-                    name: 'Level four (2)',
-                    key: 'level_four_2',
-                    pathName: 'multi-level-item-9',
-                    active: true,
-                    items: [
-                      {
-                        name: 'Level five (1)',
-                        key: 'level_five_1',
-                        path: '#!',
-                        pathName: 'multi-level-item-10',
-                        active: true,
-                      },
-                      {
-                        name: 'Level five (2)',
-                        key: 'level_five_2',
-                        path: '#!',
-                        pathName: 'multi-level-item-11',
-                        active: true,
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
       },
     ],
   },

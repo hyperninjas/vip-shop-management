@@ -1,6 +1,5 @@
 'use client';
 
-
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import {
@@ -45,8 +44,7 @@ const StackedSidenav = () => {
   const { currentBreakpoint } = useBreakpoints();
   const { isDark } = useThemeMode();
 
-  // const { data } = useSession();
-  // const user = data?.user;
+  const user = null;
 
   const isMenuActive = (item: MenuItem) => {
     const checkLink = (subMenuItem: SubMenuItem) => {
@@ -208,7 +206,7 @@ const StackedSidenav = () => {
               >
                 <StatusAvatar
                   status="online"
-                  alt="NAME USER"
+                  alt='test'
                   src={undefined}
                   sx={{ width: 36, height: 36 }}
                 />
@@ -219,7 +217,7 @@ const StackedSidenav = () => {
                     textWrap: 'nowrap',
                   }}
                 >
-                  {"USER NAME"}
+                  name
                 </Typography>
                 <IconButton sx={{ ml: 'auto' }}>
                   <IconifyIcon icon="material-symbols:settings-outline" />

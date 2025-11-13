@@ -74,6 +74,7 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.4.0",
     "prettier": "^3.6.2",
+    "react-dropzone": "^14.3.8",
     "typescript": "^5.9.3"
   },
   "overrides": {

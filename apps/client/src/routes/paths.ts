@@ -15,6 +15,8 @@ const paths = {
 
   defaultLoggedOut: `/${rootPaths.authRoot}/default/logged-out`,
 
+  account: `/${rootPaths.pagesRoot}/account`,
+  comingSoon: `/${rootPaths.pagesRoot}/coming-soon`,
   404: `/${rootPaths.errorRoot}/404`,
 };
 
