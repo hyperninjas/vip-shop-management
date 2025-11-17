@@ -113,7 +113,7 @@ const LoginForm = ({
         async onSuccess(context) {
           if (context.data.twoFactorRedirect) {
             setShow2FADialog(true);
-            sentOtp(); // Start countdown timer
+            sentOtp();
           } else {
             router.push(callbackUrl ? callbackUrl : rootPaths.root);
           }
@@ -422,9 +422,9 @@ const LoginForm = ({
             </Box>
           </Grid>
         </Grid>
-        <Link href="#!" variant="subtitle2">
+        {/* <Link href="#!" variant="subtitle2">
           Trouble signing in?
-        </Link>
+        </Link> */}
       </Stack>
 
       {/* 2FA Verification Dialog */}
