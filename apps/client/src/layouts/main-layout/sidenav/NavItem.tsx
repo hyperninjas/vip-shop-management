@@ -15,6 +15,7 @@ import { cssVarRgba } from 'lib/utils';
 import { useBreakpoints } from 'providers/BreakpointsProvider';
 import { useSettingsContext } from 'providers/SettingsProvider';
 import { COLLAPSE_NAVBAR } from 'reducers/SettingsReducer';
+import paths from 'routes/paths';
 import { SubMenuItem } from 'routes/sitemap';
 import IconifyIcon from 'components/base/IconifyIcon';
 import { useNavContext } from '../NavProvider';
@@ -128,10 +129,11 @@ const NavItem = ({ item, level }: NavItemProps) => {
           onMouseLeave={sidenavCollapsed ? handleClose : undefined}
           aria-expanded={openPopperMenu}
           selected={
-            pathname === item.path ||
-            (item.selectionPrefix && pathname!.includes(item.selectionPrefix)) ||
-            (sidenavCollapsed && sidenavType === 'default' && isNestedItemOpen(item.items)) ||
-            (openItems[level] !== item.pathName && isNestedItemOpen(item.items))
+            pathname !== paths.comingSoon &&
+            (pathname === item.path ||
+              (item.selectionPrefix && pathname!.includes(item.selectionPrefix)) ||
+              (sidenavCollapsed && sidenavType === 'default' && isNestedItemOpen(item.items)) ||
+              (openItems[level] !== item.pathName && isNestedItemOpen(item.items)))
           }
           sx={[
             (theme) => ({

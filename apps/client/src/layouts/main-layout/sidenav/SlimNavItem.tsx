@@ -18,6 +18,7 @@ import List from '@mui/material/List';
 import DocSearch from 'layouts/main-layout/sidenav/doc-search/DocSearch';
 import { cssVarRgba } from 'lib/utils';
 import { useSettingsContext } from 'providers/SettingsProvider';
+import paths from 'routes/paths';
 import { SubMenuItem } from 'routes/sitemap';
 import IconifyIcon from 'components/base/IconifyIcon';
 import { useNavContext } from '../NavProvider';
@@ -75,9 +76,10 @@ const SlimNavItem = ({ item, level }: SlimNavItemProps) => {
       onClick={toggleCollapseItem}
       aria-expanded={openPopperMenu}
       selected={
-        pathname === item.path ||
-        (item.selectionPrefix && pathname!.includes(item.selectionPrefix)) ||
-        isNestedItemOpen(item.items)
+        pathname !== paths.comingSoon &&
+        (pathname === item.path ||
+          (item.selectionPrefix && pathname!.includes(item.selectionPrefix)) ||
+          isNestedItemOpen(item.items))
       }
       sx={[
         {
@@ -133,7 +135,7 @@ const SlimNavItem = ({ item, level }: SlimNavItemProps) => {
       href={item.path}
       onClick={toggleCollapseItem}
       aria-expanded={openPopperMenu}
-      // selected={pathname === item.path}
+      selected={pathname !== paths.comingSoon && pathname === item.path}
       sx={[
         {
           color: 'text.secondary',

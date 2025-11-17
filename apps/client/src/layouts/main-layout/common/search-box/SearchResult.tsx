@@ -24,7 +24,6 @@ import {
 } from '@mui/material';
 import searchResult from 'data/search-result';
 import IconifyIcon from 'components/base/IconifyIcon';
-import Image from 'components/base/Image';
 import SearchTextField from './SearchTextField';
 
 const SearchResult = ({ handleClose }: { handleClose: () => void }) => {
@@ -193,7 +192,7 @@ const SearchResult = ({ handleClose }: { handleClose: () => void }) => {
                       <IconifyIcon icon={file.icon} fontSize={32} color="primary.main" />
                     )}
                     {file.image && (
-                      <Image src={file.image} alt={file.name} height={30} width={30} />
+                      <img src={file.image} alt={file.name} height={30} width={30} />
                     )}
                   </ListItemIcon>
                   <Tooltip title={file.name} placement="top-start">
