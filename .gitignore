@@ -5,3 +5,6 @@ node_modules
 .env
 .env.local
 /generated/prisma
+.idea
+.DS_Store
+/apps/.DS_Store
