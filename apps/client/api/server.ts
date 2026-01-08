@@ -83,6 +83,7 @@ export async function getServerApiConfig(
       token = authCookie?.value;
     } catch (error) {
       // Cookies might not be available in all contexts
+      // eslint-disable-next-line no-console
       console.warn('Failed to read auth cookie:', error);
     }
   }

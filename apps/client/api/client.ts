@@ -6,8 +6,7 @@
  * handling, authentication, and middleware support.
  */
 
-import { Configuration } from './generated/runtime';
-import type { ConfigurationParameters, Middleware } from './generated/runtime';
+import { Configuration, type ConfigurationParameters, type Middleware } from './generated/runtime';
 
 /**
  * Get the API base URL based on the environment

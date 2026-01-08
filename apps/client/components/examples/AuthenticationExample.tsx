@@ -7,9 +7,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useApi } from '@/api';
-import { HealthApi } from '@/api';
-import type { HealthControllerCheck200Response } from '@/api';
+import { useApi, HealthApi, type HealthControllerCheck200Response } from '@/api';
 
 export default function AuthenticationExample() {
   const [token, setToken] = useState<string>('');
@@ -86,6 +84,7 @@ export default function AuthenticationExample() {
 
         <div style={{ display: 'flex', gap: '10px' }}>
           <button
+            type="button"
             onClick={saveToken}
             disabled={!token}
             style={{
@@ -101,6 +100,7 @@ export default function AuthenticationExample() {
           </button>
 
           <button
+            type="button"
             onClick={clearToken}
             disabled={!storedToken}
             style={{
@@ -131,6 +131,7 @@ export default function AuthenticationExample() {
       </div>
 
       <button
+        type="button"
         onClick={makeAuthenticatedRequest}
         disabled={loading}
         style={{

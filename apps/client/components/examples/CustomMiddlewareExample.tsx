@@ -8,9 +8,15 @@
 'use client';
 
 import { useState } from 'react';
-import { useApiClient, combineMiddleware, createLoggingMiddleware } from '@/api';
-import { HealthApi } from '@/api';
-import type { Middleware, RequestContext, ResponseContext } from '@/api';
+import {
+  useApiClient,
+  combineMiddleware,
+  createLoggingMiddleware,
+  HealthApi,
+  type Middleware,
+  type RequestContext,
+  type ResponseContext,
+} from '@/api';
 
 // Custom middleware to add request timing
 const createTimingMiddleware = (): Middleware => {
@@ -18,6 +24,7 @@ const createTimingMiddleware = (): Middleware => {
     async pre(context: RequestContext) {
       // Add start time to the request
       (context.init as any).__startTime = Date.now();
+      // eslint-disable-next-line no-console
       console.log('⏱️ Request started:', context.url);
       return context;
     },
@@ -26,6 +33,7 @@ const createTimingMiddleware = (): Middleware => {
       // Calculate duration
       const startTime = (context.init as any).__startTime;
       const duration = Date.now() - startTime;
+      // eslint-disable-next-line no-console
       console.log(`⏱️ Request completed in ${duration}ms:`, context.url);
       return context.response;
     },
@@ -82,6 +90,7 @@ export default function CustomMiddlewareExample() {
       setTiming(duration);
       setResult(data);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Request failed:', err);
     } finally {
       setLoading(false);
@@ -94,6 +103,7 @@ export default function CustomMiddlewareExample() {
       <p>Advanced request/response handling with custom middleware</p>
 
       <button
+        type="button"
         onClick={makeRequest}
         disabled={loading}
         style={{

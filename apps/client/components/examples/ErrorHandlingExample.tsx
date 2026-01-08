@@ -8,8 +8,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useApi, ApiError } from '@/api';
-import { HealthApi } from '@/api';
+import { useApi, ApiError, HealthApi } from '@/api';
 
 export default function ErrorHandlingExample() {
   const [error, setError] = useState<ApiError | null>(null);
@@ -52,6 +51,7 @@ export default function ErrorHandlingExample() {
 
         setErrorDetails(details);
       } else {
+        // eslint-disable-next-line no-console
         console.error('Non-API error:', err);
       }
     } finally {
@@ -65,6 +65,7 @@ export default function ErrorHandlingExample() {
       <p>Demonstrates comprehensive error handling with ApiError class</p>
 
       <button
+        type="button"
         onClick={triggerError}
         disabled={loading}
         style={{

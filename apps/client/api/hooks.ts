@@ -8,8 +8,7 @@
 
 import { useMemo } from 'react';
 import { createClientConfig } from './client';
-import type { Configuration } from './generated/runtime';
-import {Configuration as GeneratedConfiguration} from './generated/runtime';
+import { Configuration as GeneratedConfiguration, type Configuration } from './generated/runtime';
 import { 
   createAuthMiddleware, 
   createErrorHandlingMiddleware, 
@@ -67,16 +66,6 @@ export function useApiClient(options: UseApiClientOptions = {}): Configuration {
     enableLogging = process.env.NODE_ENV === 'development',
     enableErrorHandling = true,
   } = options;
-  
-  const config = useMemo(() => {
-    const middleware = combineMiddleware(
-      getAccessToken ? createAuthMiddleware(getAccessToken) : undefined,
-      enableErrorHandling ? createErrorHandlingMiddleware() : undefined,
-      enableLogging ? createLoggingMiddleware() : undefined,
-    );
-    
-    return createClientConfig(accessToken);
-  }, [accessToken, getAccessToken, enableLogging, enableErrorHandling]);
   
   // Add middleware to the configuration
   return useMemo(() => {

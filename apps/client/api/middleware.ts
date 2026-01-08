@@ -45,6 +45,7 @@ export function createLoggingMiddleware(): Middleware {
   return {
     async pre(context: RequestContext) {
       if (isDev) {
+        // eslint-disable-next-line no-console
         console.log('[API Request]', {
           method: context.init.method,
           url: context.url,
@@ -56,6 +57,7 @@ export function createLoggingMiddleware(): Middleware {
     
     async post(context: ResponseContext) {
       if (isDev) {
+        // eslint-disable-next-line no-console
         console.log('[API Response]', {
           status: context.response.status,
           statusText: context.response.statusText,
@@ -107,7 +109,9 @@ export class ApiError extends Error {
    * Get the response body as JSON
    */
   async getResponseJson<T = any>(): Promise<T | null> {
-    if (!this.response) return null;
+    if (!this.response) {
+      return null;
+    }
     
     try {
       const clone = this.response.clone();
@@ -121,7 +125,9 @@ export class ApiError extends Error {
    * Get the response body as text
    */
   async getResponseText(): Promise<string | null> {
-    if (!this.response) return null;
+    if (!this.response) {
+      return null;
+    }
     
     try {
       const clone = this.response.clone();
@@ -235,7 +241,7 @@ export function createRetryMiddleware(options: {
       
       // Calculate delay with optional exponential backoff
       const delay = exponentialBackoff
-        ? retryDelay * Math.pow(2, retryCount)
+        ? retryDelay * (2 ** retryCount)
         : retryDelay;
       
       retryCount++;

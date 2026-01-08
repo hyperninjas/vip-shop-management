@@ -34,6 +34,7 @@ export default function ServerActionExample() {
       <p>Using API client in Server Actions with cache revalidation</p>
 
       <button
+        type="button"
         onClick={handleAction}
         disabled={loading}
         style={{
