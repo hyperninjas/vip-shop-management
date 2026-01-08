@@ -1,0 +1,59 @@
+http:
+  middlewares:
+    security-headers:
+      headers:
+        # Security headers
+        frameDeny: true
+        contentTypeNosniff: true
+        browserXssFilter: true
+        referrerPolicy: no-referrer-when-downgrade
+        stsSeconds: 31536000
+        stsIncludeSubdomains: true
+        stsPreload: true
+        # CORS - adjust as needed
+        accessControlAllowOriginList: ["https://$APP_DOMAIN"]
+        accessControlAllowMethods:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+          - OPTIONS
+        accessControlAllowHeaders:
+          - Authorization
+          - Content-Type
+          - X-Requested-With
+        addVaryHeader: true
+
+    rate-limit:
+      rateLimit:
+        average: 100
+        burst: 50
+
+    basic-auth:
+      basicAuth:
+        users:
+          # Use htpasswd to generate, e.g.: htpasswd -nbB user pass
+          # Placeholder; replace with a real bcrypt hash
+          - "user:$2y$05$ku4SIuZkJXPh2Fh4giRSgeL.vPc6hrKDx44t1WA8.4lZh7inH8N5."
+
+log:
+  level: INFO
+
+accessLog:
+  bufferingSize: 100
+  fields:
+    defaultMode: keep
+    names:
+      ClientUsername: drop
+      RequestProtocol: keep
+      RequestMethod: keep
+      RequestPath: keep
+      ClientAddr: keep
+      DownstreamStatus: keep
+      Duration: keep
+  filters:
+    statusCodes:
+      - "200-399"
+      - "400-499"
+      - "500-599"

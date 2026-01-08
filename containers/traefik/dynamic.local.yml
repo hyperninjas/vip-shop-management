@@ -1,0 +1,58 @@
+http:
+  routers:
+    client-file:
+      rule: PathPrefix(`/`)
+      entryPoints:
+        - web
+      service: client-svc
+      middlewares:
+        - security-headers
+        - rate-limit
+    api-file:
+      rule: PathPrefix(`/api`)
+      entryPoints:
+        - web
+      service: api-svc
+      middlewares:
+        - strip-api
+        - security-headers
+        - rate-limit
+
+  services:
+    client-svc:
+      loadBalancer:
+        servers:
+          - url: http://client:3000
+    api-svc:
+      loadBalancer:
+        servers:
+          - url: http://server:4000
+
+  middlewares:
+    security-headers:
+      headers:
+        frameDeny: true
+        contentTypeNosniff: true
+        browserXssFilter: true
+        referrerPolicy: no-referrer
+        stsSeconds: 0  # no HSTS on localhost
+        accessControlAllowOriginList: ["http://localhost"]
+        accessControlAllowMethods: [GET, POST, PUT, PATCH, DELETE, OPTIONS]
+        accessControlAllowHeaders: [Authorization, Content-Type, X-Requested-With]
+        addVaryHeader: true
+
+    rate-limit:
+      rateLimit:
+        average: 200
+        burst: 100
+
+    strip-api:
+      stripPrefix:
+        prefixes:
+          - /api
+
+log:
+  level: INFO
+
+accessLog:
+  bufferingSize: 100

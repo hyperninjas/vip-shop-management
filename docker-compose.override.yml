@@ -1,0 +1,60 @@
+services:
+  # Local-only Traefik config: HTTP only, no ACME
+  traefik:
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.filename=/dynamic.yml
+      - --entrypoints.web.address=:80
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --accesslog=true
+      - --accesslog.format=json
+      # Metrics (Prometheus)
+      - --entrypoints.metrics.address=:8082
+      - --metrics.prometheus=true
+      - --metrics.prometheus.entryPoint=metrics
+      # Tracing (OTLP; needs a collector if you want to export traces)
+      - --tracing=true
+      - --tracing.otlp=true
+      - --tracing.otlp.http.endpoint=http://localhost:4318
+      # If using Jaeger directly instead:
+      # - --tracing.jaeger=true
+      # - --tracing.jaeger.samplingServerURL=http://localhost:5778/sampling
+      # - --tracing.jaeger.samplingType=const
+      # - --tracing.jaeger.samplingParam=1.0
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "8082:8082" # metrics
+    volumes:
+      - ./containers/traefik/dynamic.local.yml:/dynamic.yml:ro
+
+  # Force routers to use only `web` (HTTP) and drop TLS in local
+  server:
+    labels:
+      - "traefik.http.routers.api.rule=PathPrefix(`/api`)"
+      - "traefik.http.routers.api.entrypoints=web"
+      - "traefik.http.routers.api.tls="
+      - "traefik.http.routers.api.middlewares=strip-api@docker,security-headers@file,rate-limit@file"
+      # Add a high-priority local router to override Host() rules from base
+      - "traefik.http.routers.api-local.rule=PathPrefix(`/api`)"
+      - "traefik.http.routers.api-local.entrypoints=web"
+      - "traefik.http.routers.api-local.priority=1000"
+      - "traefik.http.routers.api-local.tls="
+      - "traefik.http.routers.api-local.service=api"
+      - "traefik.http.routers.api-local.middlewares=strip-api@docker,security-headers@file,rate-limit@file"
+
+  client:
+    labels:
+      - "traefik.http.routers.client.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.client.entrypoints=web"
+      - "traefik.http.routers.client.tls="
+      - "traefik.http.routers.client.middlewares=security-headers@file,rate-limit@file"
+      # Add a high-priority local router to override Host() rules from base
+      - "traefik.http.routers.client-local.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.client-local.entrypoints=web"
+      - "traefik.http.routers.client-local.priority=1000"
+      - "traefik.http.routers.client-local.tls="
+      - "traefik.http.routers.client-local.service=client"
+      - "traefik.http.routers.client-local.middlewares=security-headers@file,rate-limit@file"
