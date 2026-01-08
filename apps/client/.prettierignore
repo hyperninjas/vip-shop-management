@@ -1,7 +1,2 @@
-.next/
-.vscode-test/
-out/
-dist/
-node_modules/
-public/
-build/
+.next
+next-env.d.ts
