@@ -99,9 +99,9 @@ async function bootstrap() {
       const jsonDoc = JSON.stringify(document, null, 2);
       const filename = openapiConfig.filename;
 
-      // Resolve path from dist folder to client openapi directory
-      // apps/server/dist -> ../../client/openapi
-      const clientOutDir = path.resolve(__dirname, '../../client/openapi');
+      // Resolve path from server cwd to client openapi directory
+      // process.cwd() is apps/server, go up one level then to apps/client
+      const clientOutDir = path.resolve(process.cwd(), '../client/openapi');
       mkdirSync(clientOutDir, { recursive: true });
       const clientOutFile = path.join(clientOutDir, filename);
       writeFileSync(clientOutFile, jsonDoc, 'utf8');
