@@ -49,10 +49,8 @@ services:
       - "traefik.http.routers.api.tls=true"
       - "traefik.http.routers.api.tls.certresolver=le"
       - "traefik.http.services.api.loadbalancer.server.port=4000"
-      # strip /api before forwarding to Nest if it expects root
-      - "traefik.http.middlewares.strip-api.stripprefix.prefixes=/api"
       # Attach security, rate-limit, and basic auth (preprod) middlewares
-      - "traefik.http.routers.api.middlewares=basic-auth@file,strip-api@docker,security-headers@file,rate-limit@file"
+      - "traefik.http.routers.api.middlewares=basic-auth@file,security-headers@file,rate-limit@file"
 
   client:
     build:

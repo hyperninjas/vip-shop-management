@@ -36,14 +36,14 @@ services:
       - "traefik.http.routers.api.rule=PathPrefix(`/api`)"
       - "traefik.http.routers.api.entrypoints=web"
       - "traefik.http.routers.api.tls="
-      - "traefik.http.routers.api.middlewares=strip-api@docker,security-headers@file,rate-limit@file"
+      - "traefik.http.routers.api.middlewares=security-headers@file,rate-limit@file"
       # Add a high-priority local router to override Host() rules from base
       - "traefik.http.routers.api-local.rule=PathPrefix(`/api`)"
       - "traefik.http.routers.api-local.entrypoints=web"
       - "traefik.http.routers.api-local.priority=1000"
       - "traefik.http.routers.api-local.tls="
       - "traefik.http.routers.api-local.service=api"
-      - "traefik.http.routers.api-local.middlewares=strip-api@docker,security-headers@file,rate-limit@file"
+      - "traefik.http.routers.api-local.middlewares=security-headers@file,rate-limit@file"
 
   client:
     labels:

@@ -17,6 +17,7 @@ COPY pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Copy package manifests that affect dependency graph
 COPY apps/server/package.json apps/server/package.json
+COPY apps/client/package.json apps/client/package.json
 
 # Install deps with cache (workspace context)
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
@@ -38,6 +39,7 @@ WORKDIR /app
 
 # Copy the pruned, production-only server bundle
 COPY --from=build /prod/server .
+COPY --from=build /usr/src/app/apps/server/dist ./dist
 
 # Run as non-root
 USER node
@@ -46,4 +48,4 @@ USER node
 ENV PORT=4000
 EXPOSE 4000
 
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/src/main.js"]
