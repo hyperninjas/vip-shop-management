@@ -28,6 +28,7 @@ This directory contains all project documentation files.
 ### **Deployment Documentation**
 
 -   **[PRE_LAUNCH_CHECKLIST.md](./PRE_LAUNCH_CHECKLIST.md)** - Complete pre-launch checklist for production deployment
+-   **[CHECKLIST_EXPLANATIONS.md](./CHECKLIST_EXPLANATIONS.md)** - Detailed explanations of checklist items
 
 ### **Optimization Documentation**
 
