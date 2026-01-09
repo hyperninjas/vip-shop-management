@@ -1,10 +1,204 @@
-node_modules
-.DS_Store
-.DS_Store
-.DS_Store
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Environment variables
 .env
+.env.*
+!.env.example
 .env.local
-/generated/prisma
-.idea
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+*.tsbuildinfo
+*.tsbuildinfo.*
+
+# Prisma
+# Generated Prisma Client (keep migrations)
+apps/server/src/generated/
+apps/server/prisma/migrations/*.sql
+!apps/server/prisma/migrations/migration_lock.toml
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+.jest/
+test-results/
+playwright-report/
+playwright/.cache/
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 .DS_Store
-/apps/.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+*.dockerignore
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.temp/
+tmp/
+temp/
+
+# Package manager files
+package-lock.json
+yarn.lock
+# Keep pnpm-lock.yaml (it's recommended to commit it)
+# pnpm-lock.yaml
+
+# Next.js
+.next/
+out/
+.vercel
+.vercel.json
+
+# NestJS
+dist/
+*.js.map
+
+# OpenAPI generated files (optional - uncomment if you don't want to track generated API clients)
+# apps/client/api/generated/
+# apps/server/client/openapi/
+
+# Storybook
+storybook-static/
+.out/
+
+# TypeScript
+*.tsbuildinfo
+.tsbuildinfo
+
+# ESLint cache
+.eslintcache
+
+# Prettier cache
+.prettiercache
+
+# Turbo
+.turbo/
+
+# Vercel
+.vercel
+
+# Sentry
+.sentryclirc
+
+# Local development
+.local/
+local/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# MacOS
+.AppleDouble
+.LSOverride
+Icon
+
+# Windows
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Application specific
+apps/*/coverage/
+apps/*/.next/
+apps/*/dist/
+apps/*/build/
+apps/*/.turbo/
+
+# Generated files
+**/generated/
+**/*.generated.*
+!**/generated/.gitkeep
+
+# Secrets and credentials
+secrets/
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+id_rsa
+id_rsa.pub
+*.env.secret
+
+# Monitoring and analytics
+.sentry/
+.sentryclirc
+
+# Misc
+*.pid
+*.seed
+*.pid.lock
+.npm
+.eslintcache
+.stylelintcache

@@ -1,12 +1,12 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
-import compression from 'compression';
-import helmet from 'helmet';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import compression from 'compression';
 import { mkdirSync, writeFileSync } from 'fs';
+import helmet from 'helmet';
 import path from 'path';
+import { AppModule } from './app.module';
 import {
   CorsConfiguration,
   OpenapiConfiguration,
@@ -14,8 +14,9 @@ import {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    bodyParser: false,
+    bodyParser: true, // Enable body parser for proper request handling
     logger: ['log', 'error', 'warn', 'debug', 'fatal'],
+    bufferLogs: true, // Buffer logs until logger is ready
   });
   const configService = app.get(ConfigService);
   const port = configService.get<number>('port')!;
@@ -24,9 +25,14 @@ async function bootstrap() {
   const corsConfig = configService.get<CorsConfiguration>('cors')!;
   const openapiConfig = configService.get<OpenapiConfiguration>('openapi')!;
 
-  if (!isDev) {
-    app.use(compression({}));
-  }
+  // Enable compression for all environments (better performance)
+  app.use(
+    compression({
+      level: 6, // Compression level (1-9)
+      threshold: 1024, // Only compress responses larger than 1KB
+    }),
+  );
+  // Enhanced security headers
   app.use(
     helmet({
       contentSecurityPolicy: {
@@ -48,18 +54,21 @@ async function bootstrap() {
               ],
             }
           : {
-              'default-src': ["'self'", 'https://cdn.jsdelivr.net'],
-              'script-src': ["'self'", 'https://cdn.jsdelivr.net'],
-              'connect-src': [
-                "'self'",
-                'https://cdn.jsdelivr.net',
-                'http://localhost:3000',
-              ],
+              'default-src': ["'self'"],
+              'script-src': ["'self'"],
+              'connect-src': ["'self'"],
             },
+      },
+      crossOriginEmbedderPolicy: !isDev,
+      crossOriginOpenerPolicy: !isDev,
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
+      hsts: {
+        maxAge: 31536000,
+        includeSubDomains: true,
+        preload: true,
       },
     }),
   );
-  console.log(corsConfig);
 
   app.enableCors({
     origin: corsConfig.origins,
@@ -112,10 +121,50 @@ async function bootstrap() {
   }
 
   app.setGlobalPrefix('api');
+
+  // Graceful shutdown
+  const gracefulShutdown = async (signal: string): Promise<void> => {
+    Logger.warn(`Received ${signal}, starting graceful shutdown...`);
+    try {
+      await app.close();
+      Logger.log('Application closed successfully');
+      process.exit(0);
+    } catch (error) {
+      Logger.error('Error during shutdown', error);
+      process.exit(1);
+    }
+  };
+
+  process.on('SIGTERM', () => {
+    void gracefulShutdown('SIGTERM');
+  });
+  process.on('SIGINT', () => {
+    void gracefulShutdown('SIGINT');
+  });
+
+  // Handle uncaught exceptions
+  process.on('uncaughtException', (error) => {
+    Logger.error('Uncaught Exception', error);
+    void gracefulShutdown('uncaughtException');
+  });
+
+  // Handle unhandled promise rejections
+  process.on('unhandledRejection', (reason, promise) => {
+    Logger.error('Unhandled Rejection', { reason, promise });
+    void gracefulShutdown('unhandledRejection');
+  });
+
   await app.listen(port);
-  Logger.debug(`Server started on http://localhost:${port}`);
-  Logger.debug(
-    `OpenAPI documentation available at http://localhost:${port}/api`,
+  Logger.log(`🚀 Server started on http://localhost:${port}`);
+  Logger.log(
+    `📚 OpenAPI documentation available at http://localhost:${port}/api`,
   );
+  Logger.log(
+    `🏥 Health check available at http://localhost:${port}/api/health`,
+  );
+  Logger.log(`🌍 Environment: ${env}`);
 }
-bootstrap().catch((err) => console.error(err));
+bootstrap().catch((err) => {
+  Logger.error('Failed to start application', err);
+  process.exit(1);
+});

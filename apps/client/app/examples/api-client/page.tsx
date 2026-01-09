@@ -12,6 +12,9 @@ import ErrorHandlingExample from '@/components/examples/ErrorHandlingExample';
 import ServerActionExample from '@/components/examples/ServerActionExample';
 import ServerComponentExample from '@/components/examples/ServerComponentExample';
 
+// Force dynamic rendering (this page uses cookies/auth)
+export const dynamic = 'force-dynamic';
+
 export default function APIClientExamplesPage() {
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>

@@ -6,7 +6,9 @@ import tseslint from 'typescript-eslint';
 export default defineConfig(
   tseslint.configs.recommended,
   ...mantine,
-  { ignores: ['**/*.{mjs,cjs,js,d.ts,d.mts}', '.next'] },
+  {
+    ignores: ['**/*.{mjs,cjs,js,d.ts,d.mts}', '.next', 'api/generated/**/*', '**/generated/**/*'],
+  },
   {
     files: ['**/*.story.tsx'],
     rules: { 'no-console': 'off' },
