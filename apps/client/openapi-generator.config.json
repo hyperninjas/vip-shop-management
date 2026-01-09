@@ -1,7 +1,7 @@
 {
   "generatorName": "typescript-fetch",
   "inputSpec": "openapi/openapi.json",
-  "outputDir": "src/api/generated",
+  "outputDir": "api/generated",
   "additionalProperties": {
     "typescriptThreePlus": true,
     "withInterfaces": true,
