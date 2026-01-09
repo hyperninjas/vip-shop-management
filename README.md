@@ -164,6 +164,7 @@ All project documentation is available in the [`documentation/`](./documentation
 -   **[Testing Guide](./documentation/TESTING.md)** - Complete testing setup and guide
 -   **[CI/CD Guide](./documentation/CI_CD_GUIDE.md)** - CI/CD pipeline documentation
 -   **[Docker Guide](./documentation/DOCKER_GUIDE.md)** - Docker optimization guide
+-   **[Pre-Launch Checklist](./documentation/PRE_LAUNCH_CHECKLIST.md)** - Complete checklist before going live
 -   **[Commit Guide](./documentation/COMMIT_GUIDE.md)** - Commit message conventions
 
 See [documentation/README.md](./documentation/README.md) for the complete documentation index.

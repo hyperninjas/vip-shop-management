@@ -25,6 +25,10 @@ This directory contains all project documentation files.
 -   **[CHANGES_EXPLANATION.md](./CHANGES_EXPLANATION.md)** - Project changes explanation
 -   **[CHANGELOG.md](./CHANGELOG.md)** - Server changelog
 
+### **Deployment Documentation**
+
+-   **[PRE_LAUNCH_CHECKLIST.md](./PRE_LAUNCH_CHECKLIST.md)** - Complete pre-launch checklist for production deployment
+
 ### **Optimization Documentation**
 
 -   **[OPTIMIZATION_SUMMARY.md](./OPTIMIZATION_SUMMARY.md)** - Optimization summary
@@ -49,6 +53,7 @@ This directory contains all project documentation files.
 
 -   [CI_CD_GUIDE.md](./CI_CD_GUIDE.md) - CI/CD pipeline guide
 -   [DOCKER_GUIDE.md](./DOCKER_GUIDE.md) - Docker optimization guide
+-   [PRE_LAUNCH_CHECKLIST.md](./PRE_LAUNCH_CHECKLIST.md) - Pre-launch checklist
 
 ### **Troubleshooting**
 
