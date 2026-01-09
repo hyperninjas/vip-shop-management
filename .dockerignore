@@ -1,6 +1,86 @@
+# Dependencies
 node_modules
-.git
-dist
-.next
+.pnp
+.pnp.js
+
+# Testing
+coverage
+.nyc_output
+test-results
+playwright-report
+playwright/.cache
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Build outputs (will be generated in Docker)
+apps/*/dist
+apps/*/.next
+apps/*/build
+apps/*/out
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
 .DS_Store
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI/CD
+.github
+.gitlab-ci.yml
+
+# Documentation
 *.md
+!README.md
+docs
+
+# Misc
+.cache
+.temp
+.tmp
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+
+# Prisma (schema will be copied, but migrations are large)
+apps/server/prisma/migrations/*.sql
+!apps/server/prisma/migrations/migration_lock.toml
+
+# Generated files (will be regenerated in Docker)
+apps/server/src/generated
+apps/client/api/generated
+
+# Storybook
+storybook-static
+.storybook
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# CI/CD artifacts
+.vercel
+.turbo

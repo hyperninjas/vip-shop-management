@@ -18,6 +18,9 @@ export default withBundleAnalyzer({
   compress: true, // Enable gzip compression
   // swcMinify is deprecated in Next.js 16+ (SWC is now default)
 
+  // Output standalone for optimal Docker builds (smaller image, faster startup)
+  output: 'standalone',
+
   // Monorepo support - helps Next.js find dependencies in workspace root
   outputFileTracingRoot: workspaceRoot,
 
