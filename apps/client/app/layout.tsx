@@ -3,6 +3,8 @@ import '@mantine/core/styles.css';
 import React from 'react';
 import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
 import { theme } from '../theme';
+import QueryProvider from '@/lib/react-query/QueryProvider';
+import JotaiProvider from '@/lib/jotai/providers/JotaiProvider';
 
 export const metadata = {
   title: 'Mantine Next.js template',
@@ -21,7 +23,11 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <QueryProvider>
+          <JotaiProvider>
+            <MantineProvider theme={theme}>{children}</MantineProvider>
+          </JotaiProvider>
+        </QueryProvider>
       </body>
     </html>
   );
