@@ -123,15 +123,8 @@ export abstract class BaseRepository<
 
     const where: Record<string, unknown> = { ...filters };
 
-    // Auto-apply mode: insensitive for string filters
-    for (const key of Object.keys(filters)) {
-      const value = filters[key];
-      if (typeof value === 'string') {
-        where[key] = { contains: value, mode: 'insensitive' };
-      } else {
-        where[key] = value;
-      }
-    }
+    // Standard filters are now strict equality by default for performance (index usage)
+    // Fuzzy search should be done via the specific 'searchTerm' parameter/applySearch logic
 
     if (searchTerm && this.options.searchableFields) {
       // Cast where to GenericPrismaWhere for applySearch
