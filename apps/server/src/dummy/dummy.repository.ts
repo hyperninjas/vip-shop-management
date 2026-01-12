@@ -12,7 +12,9 @@ export class DummyRepository extends BaseRepository<
   Prisma.DummyModelCreateInput,
   Prisma.DummyModelUpdateInput,
   Prisma.DummyModelWhereInput,
-  Prisma.DummyModelOrderByWithRelationInput
+  Prisma.DummyModelOrderByWithRelationInput,
+  Prisma.DummyModelWhereUniqueInput,
+  string
 > {
   constructor(protected readonly prisma: PrismaService) {
     super(prisma, prisma.dummyModel, {

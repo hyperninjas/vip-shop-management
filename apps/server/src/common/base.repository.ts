@@ -1,16 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-
 import { PrismaService } from '../prisma/prisma.service';
+import { Prisma } from '../generated/client';
 import {
   clampLimit,
   buildOrderBy,
   SortInput,
   applySearch,
+  GenericPrismaWhere,
 } from './prisma-query.util';
 
 /**
@@ -24,13 +19,48 @@ import {
  * @template TOrderByInput - The OrderBy Input type (e.g. Prisma.UserOrderByWithRelationInput)
  * @template TKey - The type of the primary key (default: string)
  */
+export interface PrismaDelegate<
+  TModel,
+  TCreateInput,
+  TUpdateInput,
+  TWhereInput,
+  TOrderByInput,
+  TWhereUniqueInput,
+> {
+  create(args: { data: TCreateInput }): Prisma.PrismaPromise<TModel>;
+  update(args: {
+    where: TWhereUniqueInput;
+    data: TUpdateInput;
+  }): Prisma.PrismaPromise<TModel>;
+  delete(args: { where: TWhereUniqueInput }): Prisma.PrismaPromise<TModel>;
+  findUnique(args: {
+    where: TWhereUniqueInput;
+  }): Prisma.PrismaPromise<TModel | null>;
+  findMany(args: {
+    where?: TWhereInput;
+    orderBy?: TOrderByInput | TOrderByInput[];
+    skip?: number;
+    take?: number;
+    cursor?: TWhereUniqueInput;
+  }): Prisma.PrismaPromise<TModel[]>;
+  count(args: { where?: TWhereInput }): Prisma.PrismaPromise<number>;
+}
+
 export abstract class BaseRepository<
-  TDelegate,
+  TDelegate extends PrismaDelegate<
+    TModel,
+    TCreateInput,
+    TUpdateInput,
+    TWhereInput,
+    TOrderByInput,
+    TWhereUniqueInput
+  >,
   TModel extends { id: TKey },
   TCreateInput,
   TUpdateInput,
   TWhereInput,
   TOrderByInput,
+  TWhereUniqueInput,
   TKey extends string | number = string,
 > {
   constructor(
@@ -46,32 +76,41 @@ export abstract class BaseRepository<
   }
 
   async create(data: TCreateInput): Promise<TModel> {
-    const result = await (this.modelDelegate as any).create({ data });
-    return result as TModel;
+    const result = await this.modelDelegate.create({ data });
+    return result;
   }
 
   async update(id: TKey, data: TUpdateInput): Promise<TModel> {
-    const result = await (this.modelDelegate as any).update({
-      where: { id },
+    const result = await this.modelDelegate.update({
+      where: { id } as unknown as TWhereUniqueInput,
       data,
     });
-    return result as TModel;
+    return result;
   }
 
   async delete(id: TKey): Promise<void> {
-    await (this.modelDelegate as any).delete({
-      where: { id },
+    await this.modelDelegate.delete({
+      where: { id } as unknown as TWhereUniqueInput,
     });
   }
 
   async findById(id: TKey): Promise<TModel | null> {
-    const result = await (this.modelDelegate as any).findUnique({
-      where: { id },
+    const result = await this.modelDelegate.findUnique({
+      where: { id } as unknown as TWhereUniqueInput,
     });
-    return result as TModel | null;
+    return result;
   }
 
-  protected buildWhere(params: any): TWhereInput {
+  protected buildWhere(
+    params: {
+      searchTerm?: string;
+      page?: number;
+      limit?: number;
+      sortField?: string;
+      sortDirection?: 'asc' | 'desc';
+      cursor?: string;
+    } & Record<string, unknown>,
+  ): TWhereInput {
     const {
       searchTerm,
       page: _page, // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -82,7 +121,7 @@ export abstract class BaseRepository<
       ...filters
     } = params;
 
-    const where: any = { ...filters };
+    const where: Record<string, unknown> = { ...filters };
 
     // Auto-apply mode: insensitive for string filters
     for (const key of Object.keys(filters)) {
@@ -95,15 +134,16 @@ export abstract class BaseRepository<
     }
 
     if (searchTerm && this.options.searchableFields) {
+      // Cast where to GenericPrismaWhere for applySearch
       const searchWhere = applySearch(
-        where,
+        where as GenericPrismaWhere,
         { term: searchTerm, fields: this.options.searchableFields },
         this.options.searchableFields,
       );
       Object.assign(where, searchWhere);
     }
 
-    return where as TWhereInput;
+    return where as unknown as TWhereInput;
   }
 
   async listWithOffsetPagination(params: {
@@ -137,21 +177,23 @@ export abstract class BaseRepository<
 
     const fallbackSort = { id: 'asc' } as unknown as TOrderByInput;
 
-    // Cast generic to 'any' to satisfy Record<string, unknown> constraint
-    const orderBy = buildOrderBy<string, any>(sort, fallbackSort);
+    const orderBy = buildOrderBy<string, Record<string, unknown>>(
+      sort,
+      fallbackSort as unknown as Record<string, unknown>,
+    );
 
     const [data, total] = await this.prisma.$transaction([
-      (this.modelDelegate as any).findMany({
+      this.modelDelegate.findMany({
         where,
-        orderBy,
+        orderBy: orderBy as unknown as TOrderByInput | TOrderByInput[],
         skip,
         take,
       }),
-      (this.modelDelegate as any).count({ where }),
-    ]);
+      this.modelDelegate.count({ where }),
+    ] as [Prisma.PrismaPromise<TModel[]>, Prisma.PrismaPromise<number>]);
 
     return {
-      data: data as TModel[],
+      data,
       pagination: {
         total,
         page,
@@ -185,20 +227,30 @@ export abstract class BaseRepository<
       : undefined;
 
     const fallbackSort = { id: 'asc' } as unknown as TOrderByInput;
-    const orderBy = buildOrderBy<string, any>(sort, fallbackSort);
+    const orderBy = buildOrderBy<string, Record<string, unknown>>(
+      sort,
+      fallbackSort as unknown as Record<string, unknown>,
+    );
 
-    const findManyArgs: any = {
+    // Explicitly type findManyArgs
+    const findManyArgs: {
+      where?: TWhereInput;
+      orderBy?: TOrderByInput | TOrderByInput[];
+      take?: number;
+      skip?: number;
+      cursor?: TWhereUniqueInput;
+    } = {
       where,
-      orderBy,
+      orderBy: orderBy as unknown as TOrderByInput | TOrderByInput[],
       take: take + 1,
     };
 
     if (cursor) {
-      findManyArgs.cursor = { id: cursor };
+      findManyArgs.cursor = { id: cursor } as unknown as TWhereUniqueInput;
       findManyArgs.skip = 1;
     }
 
-    const data = await (this.modelDelegate as any).findMany(findManyArgs);
+    const data = await this.modelDelegate.findMany(findManyArgs);
 
     let nextCursor: string | null = null;
     if (data.length > take) {
@@ -206,14 +258,14 @@ export abstract class BaseRepository<
       nextCursor = String(data[data.length - 1].id);
     }
 
-    return { data: data as TModel[], nextCursor };
+    return { data, nextCursor };
   }
 }
 
 export interface IPaginatedRepository<
   TModel,
-  TQueryOffset = any,
-  TQueryCursor = any,
+  TQueryOffset = unknown,
+  TQueryCursor = unknown,
 > {
   listWithOffsetPagination(params: TQueryOffset): Promise<{
     data: TModel[];

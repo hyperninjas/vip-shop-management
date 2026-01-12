@@ -21,8 +21,17 @@ export abstract class BaseService<
   TUpdateDto,
   TQueryOffsetDto extends BaseOffsetQueryDto,
   TQueryCursorDto extends BaseCursorQueryDto,
-  // TRepository constraint simplified:
-  TRepository extends BaseRepository<any, TModel, any, any, any, any, TKey> &
+  TWhereUniqueInput,
+  TRepository extends BaseRepository<
+    any,
+    TModel,
+    any,
+    any,
+    any,
+    any,
+    TWhereUniqueInput,
+    TKey
+  > &
     IPaginatedRepository<TModel, TQueryOffsetDto, TQueryCursorDto>,
   TKey extends string | number = string,
 > {

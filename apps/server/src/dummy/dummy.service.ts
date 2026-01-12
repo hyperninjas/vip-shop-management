@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '../generated/client';
 import { BaseService } from '../common/base.service';
 import { DummyRepository } from './dummy.repository';
 import { DummyDto } from './dto/dummy.dto';
@@ -14,6 +15,7 @@ export class DummyService extends BaseService<
   UpdateDummyDto,
   DummyOffsetQueryDto,
   DummyCursorQueryDto,
+  Prisma.DummyModelWhereUniqueInput,
   DummyRepository,
   string
 > {
